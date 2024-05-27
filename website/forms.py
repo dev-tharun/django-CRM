@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
+from .validators import validate_custom_email, validate_mobile_number
 from .models import Record
 
 class SignUpForm(UserCreationForm):
@@ -32,7 +33,10 @@ class SignUpForm(UserCreationForm):
 		self.fields['password2'].label = ''
 		self.fields['password2'].help_text = '<span class="form-text text-muted"><small>Enter the same password as before, for verification.</small></span>'	
 
-
+class CustomEmailForm(forms.Form):
+    email = forms.EmailField(validators=[validate_custom_email])
+class MobileNumberForm(forms.Form):
+    mobile_number = forms.CharField(validators=[validate_mobile_number], max_length=10)
 
 
 # Create Add Record Form
