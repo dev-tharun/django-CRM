@@ -99,7 +99,35 @@ def update_record(request, pk):
 	else:
 		messages.success(request, "You Must Be Logged In...")
 		return redirect('home')
-	
 
+def email_view(request):
+    if request.method == 'POST':
+        form = CustomEmailForm(request.POST)
+        if form.is_valid():
+            # Process the data
+            return  redirect("Valid email")
+    else:
+        form = CustomEmailForm()
+    return render(request, 'add_record.html', {'form': form})
+
+
+def mobile_number_view(request):
+    if request.method == 'POST':
+        form = MobileNumberForm(request.POST) 
+        if form.is_valid():
+            # Process the data
+            return redirect("Valid mobile number")
+    else:
+        form = MobileNumberForm() 
+    return render(request, 'add_record.html', {'form': form})
+
+
+def search(request):
+    query = request.GET.get('query')
+    records= Record.objects.filter(
+        Q(first_name__icontains=query) |
+        Q(last_name__icontains=query) 
+    )
+    return render(request, 'search_results.html', { 'records': records})
 
 
